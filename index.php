@@ -42,20 +42,33 @@
 
             // Recorrer cada div y almacenar su contenido en el array
             foreach ($divs as $key => $div) {
-                //$arrayDivs[] = trim($div->textContent); // Guardar el texto de cada div               
+                //$arrayDivs[] = trim($div->textContent); // Guardar el texto de cada div            
                 $arrayDivs[] = [explode(":", trim($div->textContent))]; // Guardar el texto de cada div               
             }
-
+            $arrayData = array();
+            foreach ($arrayDivs as $item){ //Limpieza de datos
+                foreach($item as $i){
+                    if(isset($i[0]) && isset($i[1]) && $i[0] != "" && $i[1] != ""){
+                        /*
+                        if($i[0] == "21) Observaciones ")
+                            $arrayData["Observaciones"] = $i[1];
+                        if($i[0] == "22) Cedula ")
+                            $arrayData["Cedula"] = $i[1];
+                        */
+                        $arrayData[$i[0]] = $i[1];
+                    }
+                }
+            }
             // Mostrar el array resultante
-            //print_r($arrayDivs);
+            //print_r($arrayData);
         }
     } else {
         echo "No se encontraron resultados.";
     }
     
-    $jsonData = json_encode($arrayDivs);
-    //exec("python C:\\xampp\\htdocs\\GestionPDFs\\PY\\processPDF.py", $output, $resultCode);
-    $pythonScript = escapeshellcmd("python C:\\xampp\\htdocs\\GestionPDFs\\PY\\processPDF.py " . escapeshellarg($jsonData));
+    $jsonData = json_encode($arrayData, true);
+    //$pythonScript = escapeshellcmd("python C:\\xampp\\htdocs\\GestionPDFs\\PY\\processPDF.py " . escapeshellarg($jsonData));
+    $pythonScript = escapeshellcmd("python C:\\xampp\\htdocs\\GestionPDFs\\PY\\processPDF.py " . $jsonData);
     exec($pythonScript, $output, $resultCode);
   
     print_r($output);
