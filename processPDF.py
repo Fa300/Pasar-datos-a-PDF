@@ -2,14 +2,15 @@ import pikepdf
 import sys
 import json
 
-json_data = [sys.argv[1]]
-#data = json.loads(json_data)
+json_data = sys.argv[1]
 
-#print(json_data)
+raw_string = json_data
 
-for entry in sys.argv[0c]:
-    for item in entry:
-         print(item)
+formatted_string = raw_string.replace("{", '{"').replace(":", '": "').replace(",", '", "').replace("}", '"}')
+
+data = json.loads(formatted_string)
+
+print(data.get("9) 9. Sexo ", "No se encontro la pregunta"))
 
 
 with pikepdf.Pdf.open('PDFs/Formulario_Sanitas.pdf') as my_pdf:
